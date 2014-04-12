@@ -8,7 +8,7 @@ api = restful.Api(app)
 class HelloWorld(restful.Resource):
     @cross_origin()
     def get(self):
-        return {'hello': 'world'}
+        return {'hello': 'world'}, 200, {'Access-Control-Allow-Origin': '*'}
 
 api.add_resource(HelloWorld, '/')
 @cross_origin()
