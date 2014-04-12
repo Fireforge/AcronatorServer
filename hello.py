@@ -8,16 +8,14 @@ app = Flask(__name__)
 api = restful.Api(app)
 
 class HelloWorld(restful.Resource):
-    @cors.crossdomain(origin='*')
     def get(self):
-        return {'hello': 'world'}, 200
-    @cors.crossdomain(origin='*')
+        return {'hello': 'world'}, 200, {'Access-Control-Allow-Origin': '*'}
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str)
         parser.add_argument('des', type=str)
         args = parser.parse_args()
-        return {'name': args['name'], 'des': args['des']}, 200
+        return {'name': args['name'], 'des': args['des']}, 200, {'Access-Control-Allow-Origin': '*'}
 
 api.add_resource(HelloWorld, '/')
 
