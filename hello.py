@@ -6,7 +6,6 @@ app = Flask(__name__)
 api = restful.Api(app)
 
 class HelloWorld(restful.Resource):
-    @cross_origin()
     def get(self):
         return {'hello': 'world'}, 200, {'Access-Control-Allow-Origin': '*'}
 
