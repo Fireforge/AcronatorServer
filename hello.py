@@ -18,9 +18,9 @@ class HelloWorld(restful.Resource):
         parser.add_argument('des', type=str)
         args = parser.parse_args()
 
-        #results = test.acronym_finder(args['name'],5,args['des'])
+        results = test.acronym_finder(args['name'],5,args['des'])
 
-        return {'results': 'TEST'}, 200, {'Access-Control-Allow-Origin': '*'}
+        return {'results': results.split("\n")}, 200, {'Access-Control-Allow-Origin': '*'}
 
 api.add_resource(HelloWorld, '/')
 
