@@ -10,4 +10,3 @@ class HelloWorld(restful.Resource):
         return {'hello': 'world'}, 200, {'Access-Control-Allow-Origin': '*'}
 
 api.add_resource(HelloWorld, '/')
-@cross_origin()
