@@ -18,10 +18,13 @@ class HelloWorld(restful.Resource):
         parser.add_argument('des', type=str)
         args = parser.parse_args()
 
-        results = test.acronym_finder(args['name'],5,args['des'])
+        results = 'TEST'
 
         return {'results': results}, 200, {'Access-Control-Allow-Origin': '*'}
 
 api.add_resource(HelloWorld, '/')
 
 api.add_resource(HelloWorld, '/api')
+
+if __name__ == '__main__':
+    app.run(debug=True)
