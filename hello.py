@@ -7,7 +7,6 @@ api = restful.Api(app)
 
 class HelloWorld(restful.Resource):
     def get(self):
-        f = {'hello': 'world'}
-        return flask.jsonify(**f)
+        return flask.jsonify({'hello': 'world'})
 
 api.add_resource(HelloWorld, '/')
