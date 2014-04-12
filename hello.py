@@ -6,8 +6,8 @@ from flask.ext.restful import reqparse
 import test
 
 app = Flask(__name__)
-api.decorators=[cors.crossdomain(origin='*')]
 api = restful.Api(app)
+api.decorators=[cors.crossdomain(origin='*')]
 
 class HelloWorld(restful.Resource):
     def get(self):
@@ -26,6 +26,3 @@ class HelloWorld(restful.Resource):
 api.add_resource(HelloWorld, '/')
 
 api.add_resource(HelloWorld, '/api')
-
-if __name__ == '__main__':
-    app.run(debug=True)
