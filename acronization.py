@@ -30,7 +30,7 @@ class Word:
         return self.word + " : " + str(self.priority)
 
 
-def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength=2):
+def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLength=2):
     # holds letter objects 
     acronym = []
 
@@ -117,7 +117,11 @@ if __name__ == "__main__":
      
     args = parser.parse_args()
     
-    winner_list = acronym_finder(args.acronym,args.numOutputs,args.keywords,args.minLength)
+    winner_list = acronym_finder(
+        inputAcronym=args.acronym,
+        numOutputs=args.numOutputs,
+        inputGeneralKeywords=args.keywords,
+        minWordLength=args.minLength)
     print('\n'.join(winner_list))
     
     # Test call
