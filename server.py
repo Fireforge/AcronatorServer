@@ -11,10 +11,11 @@ api = restful.Api(app)
 class HelloWorld(restful.Resource):
     def get(self):
         return {'API Docs': 'https://github.com/Fireforge/AcronatorServer'}, 200, {'Access-Control-Allow-Origin' : '*'}
-    
+
 class HelloWorld2(restful.Resource):
     def get(self, acronym, des):
         results = acronization.acronym_finder(acronym, des)
+
         return {'acronym': acronym, 'des': des, 'result': results}, 200, {'Access-Control-Allow-Origin' : '*'}
 
 api.add_resource(HelloWorld, '/')
