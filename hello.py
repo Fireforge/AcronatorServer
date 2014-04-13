@@ -7,7 +7,7 @@ import test
 
 app = Flask(__name__)
 api = restful.Api(app)
-api.decorators=[cors.crossdomain(origin='*')]
+api.decorators=[cors.crossdomain(origin='x-requested-with')]
 
 class HelloWorld(restful.Resource):
     def get(self):
