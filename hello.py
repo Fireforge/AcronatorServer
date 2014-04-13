@@ -11,6 +11,7 @@ api.decorators=[cors.crossdomain(origin='*')]
 
 class HelloWorld(restful.Resource):
     def get(self):
+
         return {'hello': 'world'}, 200, {'Access-Control-Allow-Origin' : '*'}
 
     @cors.crossdomain(origin='*')
@@ -24,6 +25,11 @@ class HelloWorld(restful.Resource):
 
         return {'results': results.split("\n")}, 200, {'Access-Control-Allow-Origin' : '*'}
 
-api.add_resource(HelloWorld, '/')
+class HelloWorld2(restful.Resource):
+    def get(self, acronym, des):
 
+        return {'hello': acronym, 'des': des}, 200, {'Access-Control-Allow-Origin' : '*'}
+
+api.add_resource(HelloWorld, '/')
+api.add_resource(HelloWorld2, '/<string:acronym>&<string:des>')
 api.add_resource(HelloWorld, '/api')
