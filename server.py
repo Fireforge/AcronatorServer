@@ -32,4 +32,4 @@ class HelloWorld2(restful.Resource):
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(HelloWorld2, '/<string:acronym>&<string:des>')
-api.add_resource(HelloWorld, '/api')
+#api.add_resource(HelloWorld, '/api')
