@@ -27,7 +27,7 @@ class HelloWorld(restful.Resource):
 
 class HelloWorld2(restful.Resource):
     def get(self, acronym, des):
-        results = test.acronym_finder(args['acronym'],5,args['des'])
+        results = test.acronym_finder(acronym,5,des)
         return {'acronym': acronym, 'des': des, 'result': results }, 200, {'Access-Control-Allow-Origin' : '*'}
 
 api.add_resource(HelloWorld, '/')
