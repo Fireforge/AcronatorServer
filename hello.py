@@ -7,11 +7,11 @@ import test
 
 app = Flask(__name__)
 api = restful.Api(app)
-api.decorators=[cors.crossdomain(origin='x-requested-with')]
+api.decorators=[cors.crossdomain(origin='*')]
 
 class HelloWorld(restful.Resource):
     def get(self):
-        return {'hello': 'world'}, 200
+        return {'hello': 'world'}, 200, {'Access-Control-Allow-Origin' : '*'}
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -21,7 +21,7 @@ class HelloWorld(restful.Resource):
 
         results = test.acronym_finder(args['name'],5,args['des'])
 
-        return {'results': results.split("\n")}, 200
+        return {'results': results.split("\n")}, 200, {'Access-Control-Allow-Origin' : '*'}
 
 api.add_resource(HelloWorld, '/')
 
