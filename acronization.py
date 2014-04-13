@@ -93,11 +93,17 @@ def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength=2)
     for x in range (0,numOutputs):
         winner = ''
         for letter in acronym:
-            if len(winner) == 0:
-                winner = letter.words[x].word
-            else:
-                winner = winner + ' ' + letter.words[x].word
-        winners.append(winner)
+            try:
+                if len(winner) == 0:
+                    winner = letter.words[x].word
+                else:
+                    winner = winner + ' ' + letter.words[x].word
+            except IndexError:
+                print("Can't get all {} words".format(len(acronym)))
+        
+        # Sanity Check if the winner is a valid acronym
+        if len(winner.split(' ')) == len(acronym):
+            winners.append(winner)
     
     return winners
 
@@ -113,3 +119,6 @@ if __name__ == "__main__":
     
     winner_list = acronym_finder(args.acronym,args.numOutputs,args.keywords,args.minLength)
     print('\n'.join(winner_list))
+    
+    # Test call
+#     print(acronym_finder('hello', 5, 'world'))
