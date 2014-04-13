@@ -5,7 +5,7 @@ import sys
 
 import requests
 
-BIGHUGELABS_API_KEY = 'a4bc4ca23d63ac955fc5c323e4891da0'
+BIGHUGELABS_API_KEY = 'f79909b74265ba8593daf87741f3c874'
 
 buzzWords = ['alignment','bot', 'collusion', 'derivative', 'engagement', 'focus', 'gathering' ,'housing','liability','management','nomenclature','operation','procedure','reduction','strategic','technology','undertaking','vision','widget','yardbird']
 forbiddenWords = ['who','what','when','where','why','were','am','and','there','their']
