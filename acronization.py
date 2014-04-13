@@ -1,6 +1,7 @@
 import json
 import argparse
 import random
+import sys
 
 import requests
 
@@ -29,9 +30,21 @@ class Word:
         return self.word + " : " + str(self.priority)
 
 
-def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength):
+def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength=2):
     # holds letter objects 
     acronym = []
+
+    inputError = False 
+    if not minWordLength > 1:
+        print('You dun goofed. Minimum word length must be greater than 1')
+        inputError = True
+
+    if not numOutputs > 0:
+        print('WTF! How does it make sense to print any less than 1 output?')
+        inputError = True
+
+    if inputError:
+        sys.exit()
     
     for keyword in inputGeneralKeywords:
         thesaurusList_url = "http://words.bighugelabs.com/api/2/" + BIGHUGELABS_API_KEY + "/" + keyword + "/json"
