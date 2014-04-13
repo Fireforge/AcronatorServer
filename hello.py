@@ -13,6 +13,7 @@ class HelloWorld(restful.Resource):
     def get(self):
         return {'hello': 'world'}, 200, {'Access-Control-Allow-Origin' : '*'}
 
+    @cors.crossdomain(origin='*')
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('name', type=str)
