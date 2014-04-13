@@ -5,7 +5,7 @@ Back-end code to Fireforge/Acronator
 
 The Website: www.github.com/Fireforge/Acronator
 
-Made [LVHack](http://hack.lehighvalleytech.org/) 2014
+Made at [LVHack](http://hack.lehighvalleytech.org/) 2014
 
 ---
 
