@@ -5,7 +5,7 @@ import sys
 
 import requests
 
-BIGHUGELABS_API_KEY = '65b6a3312a3209e5b63b1a58644dc75f'
+BIGHUGELABS_API_KEY = 'b3639f6512f18bace89a9ed65c4d3109'
 
 class AcronymLetter:
     def __init__(self, letter, word_list):
@@ -35,11 +35,11 @@ def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength=2)
     acronym = []
 
     inputError = False 
-    if not minWordLength > 1:
+    if minWordLength < 2:
         print('You dun goofed. Minimum word length must be greater than 1')
         inputError = True
 
-    if not numOutputs > 0:
+    if numOutputs < 1:
         print('WTF! How does it make sense to print any less than 1 output?')
         inputError = True
 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='De-Generate Acronym')
     parser.add_argument('acronym', metavar='ACR',help='the acronym')
     parser.add_argument('--numOutputs', metavar='NOU',type=int, help='number of outputs', default=1)
-    parser.add_argument('--minLength', metavar='MIN',type=int, help='minimum length of words used', default=1)
+    parser.add_argument('--minLength', metavar='MIN',type=int, help='minimum length of words used', default=2)
     parser.add_argument('keywords', metavar='KEY', nargs='+',help='some keywords') 
      
     args = parser.parse_args()
