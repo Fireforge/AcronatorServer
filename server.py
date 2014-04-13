@@ -19,3 +19,6 @@ class HelloWorld2(restful.Resource):
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(HelloWorld2, '/<string:acronym>&<string:des>')
+
+if __name__ == "__main__":
+    app.run(debug=True)
