@@ -5,7 +5,10 @@ import sys
 
 import requests
 
-BIGHUGELABS_API_KEY = 'b3639f6512f18bace89a9ed65c4d3109'
+BIGHUGELABS_API_KEY = 'a4bc4ca23d63ac955fc5c323e4891da0'
+
+buzzWords = ['alignment','bot', 'collusion', 'derivative', 'engagement', 'focus', 'gathering' ,'housing','liability','management','nomenclature','operation','procedure','reduction','strategic','technology','undertaking','vision','widget','yardbird']
+forbiddenWords = ['who','what','when','where','why','were','am','and','there','their']
 
 class AcronymLetter:
     def __init__(self, letter, word_list):
@@ -30,7 +33,7 @@ class Word:
         return self.word + " : " + str(self.priority)
 
 
-def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength=2):
+def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLength=2):
     # holds letter objects 
     acronym = []
 
@@ -56,10 +59,16 @@ def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength=2)
             continue
         else:
             print("Shit: " + str(thesaurusResponse.status_code))
-            
+
+    letters = []
 
     for i, c in enumerate(inputAcronym):
-        firstLetter = c.lower()
+        letters.append(c)
+            
+    distinctLetters = list(set(letters))
+
+    for letter in distinctLetters:
+        firstLetter = letter.lower()
         wordList = []
 
         if thesaurusResponse.status_code == 200:
@@ -76,7 +85,7 @@ def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength=2)
                             else:
                                 wordList.append(Word(word,1))
         
-        randomWords_url = "http://api.wordnik.com:80/v4/words.json/search/" + firstLetter + "?caseSensitive=false&includePartOfSpeech=noun&minCorpusCount=5&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=-1&skip=0&limit=" + str(minWordLength * minWordLength) + "&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5" 
+        randomWords_url = "http://api.wordnik.com:80/v4/words.json/search/" + firstLetter + "?caseSensitive=false&includePartOfSpeech=noun&minCorpusCount=5&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=" + str(minWordLength) + "&maxLength=-1&skip=0&limit=" + str(4 * minWordLength * minWordLength * minWordLength) + "&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5" 
         randomWordsResponse = requests.get(randomWords_url)
         if randomWordsResponse.status_code == 200:
             randomWordsJson = json.loads(randomWordsResponse.text)
@@ -88,22 +97,28 @@ def acronym_finder(inputAcronym,numOutputs,inputGeneralKeywords,minWordLength=2)
     
         sorted(wordList, key=lambda word: word.priority)
         acronym.append(AcronymLetter(firstLetter,wordList))
-                    
+
     winners = []
+
     for x in range (0,numOutputs):
         winner = ''
-        for letter in acronym:
-            try:
-                if len(winner) == 0:
-                    winner = letter.words[x].word
-                else:
-                    winner = winner + ' ' + letter.words[x].word
-            except IndexError:
-                print("Can't get all {} words".format(len(acronym)))
+        for i, c in enumerate(inputAcronym):
+            for letter in acronym: 
+                if letter.letter == c:
+                    try:
+                        word = letter.words[0]
+                        if len(winner) == 0:
+                            winner = word.word
+                            letter.words.remove(word)
+                        else:
+                            winner = winner + ' ' + word.word
+                            letter.words.remove(word)
+                    except IndexError:
+                        print("Can't get all {} words".format(len(acronym)))
         
         # Sanity Check if the winner is a valid acronym
-        if len(winner.split(' ')) == len(acronym):
-            winners.append(winner)
+        #if len(winner.split(' ')) == len(acronym):
+        winners.append(winner)
     
     return winners
 
@@ -117,7 +132,11 @@ if __name__ == "__main__":
      
     args = parser.parse_args()
     
-    winner_list = acronym_finder(args.acronym,args.numOutputs,args.keywords,args.minLength)
+    winner_list = acronym_finder(
+        inputAcronym=args.acronym,
+        numOutputs=args.numOutputs,
+        inputGeneralKeywords=args.keywords,
+        minWordLength=args.minLength)
     print('\n'.join(winner_list))
     
     # Test call

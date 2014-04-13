@@ -7,31 +7,16 @@ import acronization
 
 app = Flask(__name__)
 api = restful.Api(app)
-#api.decorators=[cors.crossdomain(origin='*')]
 
 class HelloWorld(restful.Resource):
     def get(self):
+        return {'API Docs': 'https://github.com/Fireforge/AcronatorServer'}, 200, {'Access-Control-Allow-Origin' : '*'}
 
-        return {'hello': 'world'}, 200, {'Access-Control-Allow-Origin' : '*'}
-    """
-    @cors.crossdomain(origin='*')
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('name', type=str)
-        parser.add_argument('des', type=str)
-        args = parser.parse_args()
-
-        results = test.acronym_finder(args['name'],5,args['des'])
-
-        return {'results': results.split("\n")}, 200, {'Access-Control-Allow-Origin' : '*'}
-    """
 class HelloWorld2(restful.Resource):
     def get(self, acronym, des):
-        #minWordLength = 0
-        numOutput = 5
-        results = acronization.acronym_finder(acronym,numOutput,des)
+        results = acronization.acronym_finder(acronym, des)
+
         return {'acronym': acronym, 'des': des, 'result': results}, 200, {'Access-Control-Allow-Origin' : '*'}
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(HelloWorld2, '/<string:acronym>&<string:des>')
-#api.add_resource(HelloWorld, '/api')
