@@ -38,7 +38,6 @@ def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLeng
     if minWordLength < 2:
         print('You dun goofed. Minimum word length must be greater than 1')
         inputError = True
-
     if numOutputs < 1:
         print('WTF! How does it make sense to print any less than 1 output?')
         inputError = True
@@ -46,6 +45,7 @@ def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLeng
     if inputError:
         sys.exit()
     
+    # Generate possible word names from the synonym API
     for keyword in inputGeneralKeywords:
         thesaurusList_url = "http://words.bighugelabs.com/api/2/" + BIGHUGELABS_API_KEY + "/" + keyword + "/json"
         thesaurusResponse = requests.get(thesaurusList_url)
@@ -58,6 +58,7 @@ def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLeng
             print("Shit: " + str(thesaurusResponse.status_code))
             
 
+    # Rank possible synonym words for each letter in the acronym
     for i, c in enumerate(inputAcronym):
         firstLetter = c.lower()
         wordList = []
@@ -88,7 +89,8 @@ def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLeng
     
         sorted(wordList, key=lambda word: word.priority)
         acronym.append(AcronymLetter(firstLetter,wordList))
-                    
+            
+    # Generate possible acronym results
     winners = []
     for x in range (0,numOutputs):
         winner = ''
