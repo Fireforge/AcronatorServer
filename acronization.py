@@ -5,7 +5,10 @@ import sys
 
 import requests
 
-BIGHUGELABS_API_KEY = 'b3639f6512f18bace89a9ed65c4d3109'
+BIGHUGELABS_API_KEY = 'f79909b74265ba8593daf87741f3c874'
+
+buzzWords = ['alignment','bot', 'collusion', 'derivative', 'engagement', 'focus', 'gathering' ,'housing','liability','management','nomenclature','operation','procedure','reduction','strategic','technology','undertaking','vision','widget','yardbird']
+forbiddenWords = ['who','what','when','where','why','were','am','and','there','their']
 
 class AcronymLetter:
     def __init__(self, letter, word_list):
@@ -56,11 +59,17 @@ def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLeng
             continue
         else:
             print("Shit: " + str(thesaurusResponse.status_code))
+
+    letters = []
+
+    for i, c in enumerate(inputAcronym):
+        letters.append(c)
             
+    distinctLetters = list(set(letters))
 
     # Rank possible synonym words for each letter in the acronym
-    for i, c in enumerate(inputAcronym):
-        firstLetter = c.lower()
+	for letter in distinctLetters:
+        firstLetter = letter.lower()
         wordList = []
 
         if thesaurusResponse.status_code == 200:
@@ -77,7 +86,7 @@ def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLeng
                             else:
                                 wordList.append(Word(word,1))
         
-        randomWords_url = "http://api.wordnik.com:80/v4/words.json/search/" + firstLetter + "?caseSensitive=false&includePartOfSpeech=noun&minCorpusCount=5&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=1&maxLength=-1&skip=0&limit=" + str(minWordLength * minWordLength) + "&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5" 
+        randomWords_url = "http://api.wordnik.com:80/v4/words.json/search/" + firstLetter + "?caseSensitive=false&includePartOfSpeech=noun&minCorpusCount=5&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=" + str(minWordLength) + "&maxLength=-1&skip=0&limit=" + str(4 * minWordLength * minWordLength * minWordLength) + "&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5" 
         randomWordsResponse = requests.get(randomWords_url)
         if randomWordsResponse.status_code == 200:
             randomWordsJson = json.loads(randomWordsResponse.text)
@@ -89,22 +98,28 @@ def acronym_finder(inputAcronym, inputGeneralKeywords, numOutputs=5, minWordLeng
     
         sorted(wordList, key=lambda word: word.priority)
         acronym.append(AcronymLetter(firstLetter,wordList))
-            
+
     # Generate possible acronym results
     winners = []
+
     for x in range (0,numOutputs):
         winner = ''
-        for letter in acronym:
+        for i, c in enumerate(inputAcronym):
+            for letter in acronym: 
+                if letter.letter == c:
             try:
+                        word = letter.words[0]
                 if len(winner) == 0:
-                    winner = letter.words[x].word
+                            winner = word.word
+                            letter.words.remove(word)
                 else:
-                    winner = winner + ' ' + letter.words[x].word
+                            winner = winner + ' ' + word.word
+                            letter.words.remove(word)
             except IndexError:
                 print("Can't get all {} words".format(len(acronym)))
         
         # Sanity Check if the winner is a valid acronym
-        if len(winner.split(' ')) == len(acronym):
+        #if len(winner.split(' ')) == len(acronym):
             winners.append(winner)
     
     return winners
